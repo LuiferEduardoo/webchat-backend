@@ -32,8 +32,12 @@ npm install
 ### 3. Configure Environment Variables
 Create a `.env` file in the backend folder and set the following variables:
 ```env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/chatdb
+  PORT=3000
+  MONGO_URI=mongodb://localhost:27017/your_db_name
+  GOOGLE_CLIENT_ID=client_id
+  GOOGLE_CLIENT_SECRET=secret
+  GOOGLE_CALLBACK_URL=http://localhost:3000/api/v1/auth/callback
+  FRONTEND_URI=http://localhost:3000
 ```
 
 ### 4. Start the database in development
