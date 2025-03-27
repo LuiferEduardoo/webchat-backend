@@ -13,7 +13,7 @@ class Auth {
       res.cookie("access_token", token, {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",  
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 60 * 60 * 1000,
       });
       res.writeHead(302, { Location: process.env.FRONTEND_URI});
       res.end();
@@ -35,6 +35,12 @@ class Auth {
         name,
       });
       await user.save();
+      const token = generateToken(user);
+      res.cookie("access_token", token, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 1000,
+      });
       return res.status(201).json({ message: "Usuario creado exitosamente" });
     } catch (error) {
       return res.status(500).json({ error: "Error interno del servidor" });
@@ -53,7 +59,7 @@ class Auth {
       res.cookie("access_token", token, {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 60 * 60 * 1000
       });
       return res.status(200).json({ message: "Inicio de sesión exitoso" });
     } catch(err) {
