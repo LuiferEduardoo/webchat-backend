@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
- const User =  require("../models/User");
+const { generateToken } = require("../config/passport");
+const User =  require("../models/User");
 
 class Auth {
   async callback (req, res) {
@@ -48,9 +49,7 @@ class Auth {
       if (!user && !isValid) {
         return res.status(400).json({ error: "Usuario o contraseña incorrectos" });
       }
-      const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "1d",
-      });
+      const token = generateToken(user);
       res.cookie("access_token", token, {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",
