@@ -7,9 +7,7 @@ const User =  require("../models/User");
 class Auth {
   async callback (req, res) {
     try {
-      const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET, {
-        expiresIn: "1d",
-      });
+      const token = generateToken(req.user);
       res.cookie("access_token", token, {
         httpOnly: false,
         secure: process.env.NODE_ENV === "production",  
