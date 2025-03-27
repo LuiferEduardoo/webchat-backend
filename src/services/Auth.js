@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
+const bcrypt = require("bcrypt");
+
+ const User =  require("../models/User");
 
 class Auth {
   async callback (req, res) {
@@ -15,6 +17,26 @@ class Auth {
       res.writeHead(302, { Location: process.env.FRONTEND_URI});
       res.end();
     } catch (error) {
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+  }
+
+  async register (req, res, next) {
+    try {
+      const { email, password, name } = req.body;
+      let user = await User.findOne({ email });
+      if (user) {
+        return res.status(400).json({ error: "El usuario ya existe" });
+      }
+      user = new User({
+        email,
+        password: await bcrypt.hash(password, 10),
+        name,
+      });
+      await user.save();
+      return res.status(201).json({ message: "Usuario creado exitosamente" });
+    } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
   }
