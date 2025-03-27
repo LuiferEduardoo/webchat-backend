@@ -34,5 +34,15 @@ module.exports = (httpServer) => {
         console.error("Error al actualizar el estado del usuario:", error);
       }
     }
+    
+  socket.on("disconnect", async () => {
+    try {
+      if (socket.user && socket.user.id) {
+        await User.findByIdAndUpdate(socket.user.id, { isOnline: false });
+      }
+    } catch (error) {
+      console.error("Error al actualizar el estado del usuario:", error);
+    }
+  });
   });
 };
