@@ -3,6 +3,7 @@ const passport = require("passport");
 
 const validate = require("../middleware/validate");
 const registerSchema = require("../dto/register.dto");
+const loginDto = require("../dto/login.dto");
 const Auth = require("../services/Auth");
 
 const instanceAuth = new Auth();
@@ -29,6 +30,15 @@ router.get(
 router.post("/register", validate(registerSchema), async (req, res, next) => {
   try {
     await instanceAuth.register(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+}
+);
+
+router.post("/login", validate(loginDto), async (req, res, next) => {
+  try {
+    await instanceAuth.login(req, res, next);
   } catch (error) {
     next(error);
   }
