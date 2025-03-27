@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
     } 
   },
   password: { type: String, default: null },
+  isOnline: { type: Boolean, default: false },
   googleId: { type: String, default: null },
   name: { type: String, default: null },
   picture: { type: String, default: null },
