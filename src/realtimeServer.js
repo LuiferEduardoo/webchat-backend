@@ -24,4 +24,15 @@ module.exports = (httpServer) => {
       next(new Error("Unauthorized"));
     }
   });
+  
+  io.on("connection", async (socket) => {
+    // Unirse a una sala
+    if (socket.user && socket.user.id) {
+      try {
+        await User.findByIdAndUpdate(socket.user.id, { isOnline: true });
+      } catch (error) {
+        console.error("Error al actualizar el estado del usuario:", error);
+      }
+    }
+  });
 };
