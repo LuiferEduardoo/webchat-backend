@@ -22,7 +22,10 @@ mongoose
 app.use(initialize);
 app.set("port", process.env.PORT || 3000);
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
 app.use(express.json());
 router(app);
 
