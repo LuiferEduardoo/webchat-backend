@@ -27,7 +27,7 @@ class Group {
       const { name, members } = req.body;
       const group = new GroupModel({ name, members: [...members, req.user.sub], createdBy });
       await group.save();
-      return res.status(200).json(group);
+      return res.status(201).json(group);
     } catch (error) {
       return res.status(500).json({ error: "Error al crear el grupo" });
     }
