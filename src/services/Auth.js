@@ -49,7 +49,6 @@ class Auth {
       res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure;`);
       return res.status(200).json({ message: "Inicio de sesión exitoso" });
     } catch(err) {
-      console.error(err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
   }
