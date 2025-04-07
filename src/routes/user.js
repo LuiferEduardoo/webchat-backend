@@ -21,6 +21,18 @@ router.get(
 );
 
 router.get(
+  "/:id",
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      await instanceUser.getUserById(req.params.id, res);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
   "/",
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {

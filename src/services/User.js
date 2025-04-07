@@ -10,6 +10,18 @@ class User {
     }
   }
 
+  async getUserById(id, res) {
+    try {
+      const user = await UserModel.findOne({ _id: id }, { password: 0, email: 0, googleId: 0 });
+      if (!user) {
+        return res.status(404).json({ error: "Usuario no encontrado" });
+      }
+      return res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  }
+
   async getUsers(res) {
     try {
       const users = await UserModel.find({}, { password: 0, email: 0, googleId: 0 });
