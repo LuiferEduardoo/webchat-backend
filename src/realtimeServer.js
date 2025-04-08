@@ -31,9 +31,10 @@ module.exports = (httpServer) => {
 
   io.on("connection", async (socket) => {
     // Unirse a una sala
-    if (socket.user && socket.user.id) {
+    if (socket.user && socket.user.sub) {
       try {
-        await User.findByIdAndUpdate(socket.user.id, { isOnline: true });
+        await User.findByIdAndUpdate(socket.user.sub, { isOnline: true });
+        socket.join(socket.user.sub);
       } catch (error) {
         console.error("Error al actualizar el estado del usuario:", error);
       }
@@ -43,15 +44,15 @@ module.exports = (httpServer) => {
     });
 
     // Enviar mensaje privado
-    socket.on("sendMessage", async ({ senderId, receiverId, message }) => {
-      const newMessage = new Message({ senderId, receiverId, message });
+    socket.on("sendMessage", async ({ receiverId, message }) => {
+      const newMessage = new Message({ senderId: socket.user.sub, receiverId, message });
       await newMessage.save();
       io.to(receiverId).emit("newMessage", newMessage);
     });
 
     // Enviar mensaje a una sala
     socket.on("sendGroupMessage", async ({ senderId, groupId, message }) => {
-      const newMessage = new Message({ senderId, groupId, message });
+      const newMessage = new Message({ senderId: socket.user.sub, groupId, message });
       await newMessage.save();
       io.to(groupId).emit("newGroupMessage", newMessage);
     });
