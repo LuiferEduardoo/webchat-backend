@@ -14,12 +14,16 @@ module.exports = (httpServer) => {
   io.use((socket, next) => {
     const token = socket.handshake.auth.token;
     if (token) {
-      const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
-      if (decoded) {
+      try {
+        const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
         socket.user = decoded;
         return next();
+      } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+          return next(new Error("Token expired"));
+        }
+        return next(new Error("Unauthorized"));
       }
-      next(new Error("Unauthorized"));
     } else {
       next(new Error("Unauthorized"));
     }
