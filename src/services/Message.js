@@ -6,11 +6,21 @@ class Message {
   async getMessagesByUserId(req, res) {
     try {
       const messages = await MessageModel.find({
-        receiverId: req.params.id,
-        senderId: req.user.sub,
+        $or: [
+          {
+            receiverId: req.params.id,
+            senderId: req.user.sub
+          },
+          {
+            receiverId: req.user.sub,
+            senderId: req.params.id
+          }
+        ]
       })
-      .sort({ createdAt: -1 })
-      .populate("senderId", "name");
+      .sort({ createdAt: 1 })
+      .populate("senderId", "name")
+      .populate("receiverId", "name"); // Opcional: si quieres también info del receptor
+      
       return res.status(200).json(messages);
     } catch (error) {
       return res.status(500).json({ error: "Error interno del servidor" });
