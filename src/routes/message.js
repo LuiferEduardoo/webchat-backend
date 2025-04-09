@@ -34,7 +34,7 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
-      return await instanceMessage.getSendersWithLastMessage(req.user.sub, res);
+      return await instanceMessage.getConversationsWithLastMessage(req.user.sub, res);
     } catch (error) {
       next(error);
     }

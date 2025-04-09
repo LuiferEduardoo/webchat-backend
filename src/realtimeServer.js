@@ -50,13 +50,6 @@ module.exports = (httpServer) => {
       io.to(receiverId).emit("newMessage", newMessage);
     });
 
-    // Enviar mensaje a una sala
-    socket.on("sendGroupMessage", async ({ senderId, groupId, message }) => {
-      const newMessage = new Message({ senderId: socket.user.sub, groupId, message });
-      await newMessage.save();
-      io.to(groupId).emit("newGroupMessage", newMessage);
-    });
-
     // Obtener mensajes de un usuario o grupo
     socket.on("getMessages", async ({ userId, groupId }) => {
       let messages;
