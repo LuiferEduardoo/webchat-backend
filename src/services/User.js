@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 class User {
   async getUserLogin(id, res) {
     try {
-      const user = await UserModel.findOne({ _id: id }, { password: 0, email: 0, googleId: 0 });
+      const user = await UserModel.findOne({ _id: id }, { password: 0 });
       return res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ error: "Error interno del servidor" });
