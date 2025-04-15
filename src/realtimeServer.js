@@ -2,6 +2,7 @@ const jsonwebtoken = require("jsonwebtoken");
 
 const Message = require("./models/Message");
 const User = require("./models/User");
+const Group = require("./models/Group");
 
 module.exports = (httpServer) => {
   const { Server } = require("socket.io");
@@ -35,6 +36,14 @@ module.exports = (httpServer) => {
       try {
         await User.findByIdAndUpdate(socket.user.sub, { isOnline: true });
         socket.join(socket.user.sub);
+
+        // Join all groups the user is a member of
+        await Group.find({ members: socket.user.sub }).then((groups) => {
+          groups.forEach((group) => {
+            socket.join(group._id.toString());
+          });
+        }
+        );
       } catch (error) {
         console.error("Error al actualizar el estado del usuario:", error);
       }
