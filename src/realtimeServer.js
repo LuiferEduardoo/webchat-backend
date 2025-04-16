@@ -59,6 +59,23 @@ module.exports = (httpServer) => {
       io.to(receiverId).emit("newMessage", newMessage);
     });
 
+    // Enviar mensaje a un grupo
+    socket.on("sendGroupMessage", async ({ groupId, message: messageContent }) => {
+      const newMessage = new Message({ 
+        senderId: socket.user.sub, 
+        groupId, 
+        message: messageContent 
+      });
+      
+      await newMessage.save();
+      
+      const populatedMessage = await Message.findById(newMessage._id)
+        .populate("senderId", "name picture") // Ajusta los campos que necesites
+        .exec();
+      
+      io.to(groupId).emit("newGroupMessage", populatedMessage);
+    });
+
     // Obtener mensajes de un usuario o grupo
     socket.on("getMessages", async ({ userId, groupId }) => {
       let messages;
