@@ -32,7 +32,7 @@ class Message {
       const messages = await MessageModel.find({
         groupId: req.params.id,
       })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: 1 })
       .populate("senderId", "name picture");
       return res.status(200).json(messages);
     } catch (error) {
