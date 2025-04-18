@@ -91,8 +91,8 @@ module.exports = (httpServer) => {
 
     socket.on("disconnect", async () => {
       try {
-        if (socket.user && socket.user.id) {
-          await User.findByIdAndUpdate(socket.user.id, { isOnline: false });
+        if (socket.user && socket.user.sub) {
+          await User.findByIdAndUpdate(socket.user.sub, { isOnline: false });
         }
       } catch (error) {
         console.error("Error al actualizar el estado del usuario:", error);
