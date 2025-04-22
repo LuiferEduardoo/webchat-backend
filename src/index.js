@@ -7,7 +7,7 @@ const { initialize } = require('./config/passport');
 
 const router = require("./routes");
 
-const realtimeServer = require("./realtimeServer");
+const realtimeServer = require("./realTimeServer");
 
 dotenv.config();
 
