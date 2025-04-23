@@ -17,7 +17,7 @@ module.exports = (httpServer) => {
     if (!socket.user?.sub) return;
     
     // Configurar manejadores de estado en línea
-    const { handleConnection, handleStatusRequest, handleDisconnect } = statusEvents(io, socket);
+    const { handleConnection, handleDisconnect } = statusEvents(io, socket);
     
     // Eventos principales
     await handleConnection();

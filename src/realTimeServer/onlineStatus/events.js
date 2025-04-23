@@ -28,7 +28,6 @@ module.exports = (io, socket) => {
     groups.forEach(group => socket.join(group._id.toString()));
   };
 
-
   // Evento de desconexión
   const handleDisconnect = async () => {
     const userId = socket.user.sub;
