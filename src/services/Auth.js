@@ -8,7 +8,7 @@ class Auth {
   async callback (req, res) {
     try {
       const token = generateToken(req.user);
-      res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure;`);
+      res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure; Domain=.webchat.luifereduardoo.com;`);
       res.writeHead(302, { Location: process.env.FRONTEND_URI});
       res.end();
     } catch (error) {
@@ -30,7 +30,7 @@ class Auth {
       });
       await user.save();
       const token = generateToken(user);
-      res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure;`);
+      res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure; Domain=.webchat.luifereduardoo.com;`);
       return res.status(201).json({ message: "Usuario creado exitosamente" });
     } catch (error) {
       return res.status(500).json({ error: "Error interno del servidor" });
@@ -46,7 +46,7 @@ class Auth {
         return res.status(400).json({ error: "Usuario o contraseña incorrectos" });
       }
       const token = generateToken(user);
-      res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure;`);
+      res.setHeader("Set-Cookie", `access_token=${token}; Path=/; SameSite=None; Secure; Domain=.webchat.luifereduardoo.com;`);
       return res.status(200).json({ message: "Inicio de sesión exitoso" });
     } catch(err) {
       return res.status(500).json({ error: "Error interno del servidor" });
